@@ -122,9 +122,9 @@ document.querySelector('#go').addEventListener('click', () => {
           away.append(td(sheet.awayTeamRunsByInning[i]));
           home.append(td(sheet.homeTeamRunsByInning[i] ?? '✕'));
           if (sheet.homeTeamRunsByInning[i] === undefined) {
-            alt.value += ` Inning ${i + 1}: ${sheet.awayTeamRunsByInning[i]} to ${sheet.homeTeamRunsByInning[i]}.`;
-          } else {
             alt.value += ` Top of ${i + 1}: ${sheet.awayTeamRunsByInning[i]}.`;
+          } else {
+            alt.value += ` Inning ${i + 1}: ${sheet.awayTeamRunsByInning[i]} to ${sheet.homeTeamRunsByInning[i]}.`;
           }
         });
 
