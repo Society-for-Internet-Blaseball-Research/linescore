@@ -157,7 +157,7 @@ document.querySelector('#go').addEventListener('click', () => {
         if (games[gameId] === undefined) {
           games[gameId] = {};
         }
-        games[gameId][which] = (games[gameId][which] ?? 0) + sheet.runs;
+        games[gameId][which] = (games[gameId][which] ?? 0) + sheet.hits;
       });
       Object.entries(games).forEach(([gameId, { away: awayHits, home: homeHits }]) => {
         const {
