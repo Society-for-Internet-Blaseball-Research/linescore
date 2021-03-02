@@ -1,0 +1,93 @@
+:root {
+  --bg: black;
+  --fg: white;
+  --link: #1fd9b7;
+}
+
+:root.light {
+  --bg: white;
+  --fg: black;
+  --link: #358cdb;
+}
+
+html {
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: Lora, sans-serif;
+  font-size: 15pt;
+  text-align: center;
+  line-height: 1.5;
+  margin: 2em;
+}
+
+a {
+  color: var(--link);
+}
+
+img.emoji {
+  height: 1em;
+  width: 1em;
+  margin: 0 .05em 0 .1em;
+  vertical-align: -0.1em;
+}
+
+header, table {
+  font-size: 18pt;
+}
+
+header {
+  margin-bottom: 2em;
+}
+
+header dl, header dt, header dd {
+  display: inline;
+}
+
+header dd {
+  margin: 0;
+}
+
+header input {
+  width: 3em;
+}
+
+header .note {
+  font-size: smaller;
+}
+
+.game input {
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: inherit;
+  font-size: inherit;
+  line-height: 1.5;
+
+  height: 1.5em;
+  width: 80ch;
+  margin-left: 0.5ch;
+  border: 0;
+
+  vertical-align: baseline;
+  overflow: hidden;
+  display: inline;
+  resize: none;
+}
+
+table {
+  margin: 3em auto;
+  border-collapse: collapse;
+}
+
+th, td {
+  text-align: center;
+  min-width: 1ch;
+  padding: 0 .4ch;
+}
+
+th:first-child, td:first-child {
+  text-align: left;
+}
+
+col.pad {
+  border-left: 1ch solid transparent;
+}

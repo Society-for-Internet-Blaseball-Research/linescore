@@ -1,0 +1,17 @@
+{
+  "name": "@ilianailiana/blaseball-linescore",
+  "version": "1.0.0",
+  "description": "Static web page for rendering line scores of Blaseball games",
+  "private": true,
+  "scripts": {
+    "lint": "eslint --ext .js .",
+    "fix": "eslint --ext .js . --fix"
+  },
+  "author": "iliana etaoin <iliana@buttslol.net>",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^7.21.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1"
+  }
+}
