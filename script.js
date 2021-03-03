@@ -145,6 +145,7 @@ document.querySelector('#go').addEventListener('click', () => {
 
         colgroup.append(col(true));
         head.append(th('R'));
+        head.append(th('H'));
         away.append(th(score[gameId].away));
         home.append(th(score[gameId].home));
         alt.value += ` Score: ${score[gameId].away} to ${score[gameId].home}.`;
@@ -176,11 +177,10 @@ document.querySelector('#go').addEventListener('click', () => {
       });
       Object.entries(games).forEach(([gameId, { away: awayHits, home: homeHits }]) => {
         const {
-          colgroup, head, away, home, alt,
+          colgroup, away, home, alt,
         } = getTable(gameId);
 
         colgroup.append(col());
-        head.append(th('H'));
         away.append(th(awayHits));
         home.append(th(homeHits));
         alt.value += ` Hits: ${awayHits} to ${homeHits}. ${pitcherAlt[gameId]}`;
