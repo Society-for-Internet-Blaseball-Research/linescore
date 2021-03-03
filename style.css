@@ -31,7 +31,7 @@ img.emoji {
   vertical-align: -0.1em;
 }
 
-header, table {
+header, tr.head, tr.away, tr.home {
   font-size: 18pt;
 }
 

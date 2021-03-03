@@ -24,6 +24,7 @@ document.querySelector('#go').addEventListener('click', () => {
       head: div.querySelector('.head'),
       away: div.querySelector('.away'),
       home: div.querySelector('.home'),
+      foot: div.querySelector('.foot'),
       alt: div.querySelector('input'),
     };
   }
@@ -58,6 +59,7 @@ document.querySelector('#go').addEventListener('click', () => {
 
   const ref = {};
   const score = {};
+  const pitcherAlt = {};
 
   const tournaments = [
     { emoji: '☕', name: 'The Coffee Cup', tournament: 0 },
@@ -90,7 +92,7 @@ document.querySelector('#go').addEventListener('click', () => {
         score[game.id] = { away: game.awayScore, home: game.homeScore };
 
         const {
-          colgroup, head, away, home, alt,
+          colgroup, head, away, home, foot, alt,
         } = getTable(game.id);
 
         const date = `${tournament === undefined ? `Season ${game.season + 1}` : tournament.name}, Day ${game.day + 1}`;
@@ -99,6 +101,17 @@ document.querySelector('#go').addEventListener('click', () => {
         head.append(td(date));
         away.append(th(`${emoji(game.awayTeamEmoji)} ${game.awayTeamName}`, true));
         home.append(th(`${emoji(game.homeTeamEmoji)} ${game.homeTeamName}`, true));
+
+        if (game.gameComplete) {
+          const wp = game.awayScore > game.homeScore ? game.awayPitcherName : game.homePitcherName;
+          const lp = game.awayScore < game.homeScore ? game.awayPitcherName : game.homePitcherName;
+          foot.querySelector('.wp').innerText = wp;
+          foot.querySelector('.lp').innerText = lp;
+          pitcherAlt[game.id] = `Winning pitcher: ${wp}. Losing pitcher: ${lp}.`;
+        } else {
+          foot.querySelector('td').innerHTML = '';
+        }
+
         alt.value = `${date}. ${game.awayTeamName} at ${game.homeTeamName}.`;
       });
 
@@ -113,8 +126,10 @@ document.querySelector('#go').addEventListener('click', () => {
         ref[sheet.homeTeamStats] = ['home', gameId];
 
         const {
-          colgroup, head, away, home, alt,
+          colgroup, head, away, home, foot, alt,
         } = getTable(gameId);
+
+        foot.querySelector('td').colSpan = sheet.awayTeamRunsByInning.length + 3;
 
         [...new Array(sheet.awayTeamRunsByInning.length)].forEach((_, i) => {
           colgroup.append(col(i % 3 === 0));
@@ -168,7 +183,7 @@ document.querySelector('#go').addEventListener('click', () => {
         head.append(th('H'));
         away.append(th(awayHits));
         home.append(th(homeHits));
-        alt.value += ` Hits: ${awayHits} to ${homeHits}.`;
+        alt.value += ` Hits: ${awayHits} to ${homeHits}. ${pitcherAlt[gameId]}`;
       });
     })
     .catch((err) => {
