@@ -89,7 +89,11 @@ document.querySelector('#go').addEventListener('click', () => {
     .then((data) => {
       data.forEach((game) => {
         ref[game.statsheet] = game.id;
-        score[game.id] = { away: game.awayScore, home: game.homeScore };
+        score[game.id] = {
+          away: game.awayScore,
+          home: game.homeScore,
+          x: game.gameComplete && game.topOfInning,
+        };
 
         const {
           colgroup, head, away, home, foot, alt,
@@ -135,10 +139,14 @@ document.querySelector('#go').addEventListener('click', () => {
           colgroup.append(col(i % 3 === 0));
           head.append(th(i + 1));
           away.append(td(sheet.awayTeamRunsByInning[i]));
-          home.append(td(sheet.homeTeamRunsByInning[i] ?? '✕'));
-          if (sheet.homeTeamRunsByInning[i] === undefined) {
+          if (score[gameId].x && i + 1 === sheet.awayTeamRunsByInning.length) {
+            home.append(td('✕'));
+            alt.value += ` Top of ${i + 1}: ${sheet.awayTeamRunsByInning[i]}.`;
+          } else if (sheet.homeTeamRunsByInning[i] === undefined) {
+            home.append(td());
             alt.value += ` Top of ${i + 1}: ${sheet.awayTeamRunsByInning[i]}.`;
           } else {
+            home.append(td(sheet.homeTeamRunsByInning[i]));
             alt.value += ` Inning ${i + 1}: ${sheet.awayTeamRunsByInning[i]} to ${sheet.homeTeamRunsByInning[i]}.`;
           }
         });
