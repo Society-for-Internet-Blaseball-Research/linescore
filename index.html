@@ -5,19 +5,21 @@
     <meta charset="utf-8">
     <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap" rel="stylesheet" crossorigin="anonymous">
-    <link href="style.css" rel="stylesheet">
+    <link href="style.css?1be66ee" rel="stylesheet">
   </head>
   <body>
     <header>
-      Generate line scores for
-      <dl>
-        <dt>season:</dt>
-        <dd><input id="season"></dd>
-        <dt>day:</dt>
-        <dd><input id="day"></dd>
-      </dl>
+      <form>
+        Generate line scores for
+        <dl>
+          <dt>season:</dt>
+          <dd><input type="text" id="season"></dd>
+          <dt>day:</dt>
+          <dd><input type="text" id="day"></dd>
+        </dl>
 
-      <button id="go">go</button>
+        <input type="submit" id="go" value="go">
+      </form>
 
       <p class="note">click for tournament games: <a id="coffee-cup" href="#">coffee cup</a></p>
     </header>

@@ -47,7 +47,7 @@ header dd {
   margin: 0;
 }
 
-header input {
+header input[type="text"] {
   width: 3em;
 }
 
