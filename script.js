@@ -1,7 +1,8 @@
 /* global twemoji */
 
 document.querySelector('#go').addEventListener('click', () => {
-  const BASE_URL = 'https://cors-proxy.blaseball-reference.com/database';
+  const BLASE_BASE = 'https://cors-proxy.blaseball-reference.com/database';
+  const CHRON_BASE = 'https://api.sibr.dev/chronicler';
 
   function getTable(gameId) {
     const div = document.querySelector(`div[data-id="${gameId}"]`);
@@ -84,12 +85,19 @@ document.querySelector('#go').addEventListener('click', () => {
     query.tournament = tournament.tournament;
   }
 
-  fetch(`${BASE_URL}/games?${new URLSearchParams(query)}`)
+  // regular season games have inconsistency problems on blaseball.com, coffee
+  // cup games from week 1 don't show up with the right chronicler query.
+  const gamesBase = query.tournament === 0 ? BLASE_BASE : `${CHRON_BASE}/v1`;
+
+  fetch(`${gamesBase}/games?${new URLSearchParams(query)}`)
     .then((response) => response.json())
-    .then((data) => {
+    .then((responseData) => {
+      const data = query.tournament === 0 ? responseData : responseData.data.map((x) => x.data);
+
       data.forEach((game) => {
-        ref[game.statsheet] = game.id;
-        score[game.id] = {
+        const gameId = game.id ?? game._id; // eslint-disable-line no-underscore-dangle
+        ref[game.statsheet] = gameId;
+        score[gameId] = {
           away: game.awayScore,
           home: game.homeScore,
           x: game.gameComplete && game.topOfInning,
@@ -97,7 +105,7 @@ document.querySelector('#go').addEventListener('click', () => {
 
         const {
           colgroup, head, away, home, foot, alt,
-        } = getTable(game.id);
+        } = getTable(gameId);
 
         const date = `${tournament === undefined ? `Season ${game.season + 1}` : tournament.name}, Day ${game.day + 1}`;
 
@@ -111,7 +119,7 @@ document.querySelector('#go').addEventListener('click', () => {
           const lp = game.awayScore < game.homeScore ? game.awayPitcherName : game.homePitcherName;
           foot.querySelector('.wp').innerText = wp;
           foot.querySelector('.lp').innerText = lp;
-          pitcherAlt[game.id] = `Winning pitcher: ${wp}. Losing pitcher: ${lp}.`;
+          pitcherAlt[gameId] = `Winning pitcher: ${wp}. Losing pitcher: ${lp}.`;
         } else {
           foot.querySelector('td').innerHTML = '';
         }
@@ -120,7 +128,7 @@ document.querySelector('#go').addEventListener('click', () => {
       });
 
       const ids = data.map((game) => game.statsheet);
-      return fetch(`${BASE_URL}/gameStatsheets?ids=${ids.join(',')}`);
+      return fetch(`${BLASE_BASE}/gameStatsheets?ids=${ids.join(',')}`);
     })
     .then((response) => response.json())
     .then((data) => {
@@ -160,7 +168,7 @@ document.querySelector('#go').addEventListener('click', () => {
       });
 
       const ids = data.flatMap((sheet) => [sheet.awayTeamStats, sheet.homeTeamStats]);
-      return fetch(`${BASE_URL}/teamStatsheets?ids=${ids.join(',')}`);
+      return fetch(`${BLASE_BASE}/teamStatsheets?ids=${ids.join(',')}`);
     })
     .then((response) => response.json())
     .then((data) => {
@@ -171,7 +179,7 @@ document.querySelector('#go').addEventListener('click', () => {
       const n = 200;
       const chunks = [...new Array(Math.ceil(ids.length / n))]
         .map((_, i) => ids.slice(n * i, n * i + n));
-      return Promise.all(chunks.map((chunk) => fetch(`${BASE_URL}/playerStatsheets?ids=${chunk.join(',')}`)
+      return Promise.all(chunks.map((chunk) => fetch(`${BLASE_BASE}/playerStatsheets?ids=${chunk.join(',')}`)
         .then((response) => response.json())));
     })
     .then((data) => {
