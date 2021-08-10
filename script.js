@@ -3,7 +3,7 @@
 document.querySelector('form').addEventListener('action', () => false);
 
 document.querySelector('#go').addEventListener('click', () => {
-  const BLASE_BASE = 'https://cors-proxy.blaseball-reference.com/database';
+  const BLASE_BASE = 'https://api.sibr.dev/corsmechanics/www.blaseball.com/database'
   const CHRON_BASE = 'https://api.sibr.dev/chronicler';
 
   function getTable(gameId) {
