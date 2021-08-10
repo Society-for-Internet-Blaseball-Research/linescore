@@ -178,7 +178,7 @@ document.querySelector('#go').addEventListener('click', () => {
         sheet.playerStats.forEach((id) => { ref[id] = ref[sheet.id]; });
         return sheet.playerStats;
       });
-      const n = 200;
+      const n = 50;
       const chunks = [...new Array(Math.ceil(ids.length / n))]
         .map((_, i) => ids.slice(n * i, n * i + n));
       return Promise.all(chunks.map((chunk) => fetch(`${BLASE_BASE}/playerStatsheets?ids=${chunk.join(',')}`)
